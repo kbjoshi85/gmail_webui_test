@@ -1,3 +1,7 @@
+import com.kj.pageobjects.EmailHomePage;
+import com.kj.pageobjects.SignInPage;
+import com.kj.pageobjects.SignInPage2;
+import com.kj.utils.WebUtil;
 import org.junit.*;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
@@ -23,49 +27,35 @@ public class GmailTests {
     @Test
     public void gmailLoginShouldBeSuccessful(){
 
-        // Go to gmail signIn page
-        driver.navigate().to("http://mail.google.com");
+        //1.   Go to gmail signIn page
+        SignInPage signInPage = WebUtil.goToSignInPage(driver);
 
-        //Enter Username
-        WebElement usernameTextBox = driver.findElement(By.id("Email"));
-        usernameTextBox.clear();
-        usernameTextBox.sendKeys("kbjoshitest");
 
-        //Go to next page
-        WebElement nextButton = driver.findElement(By.xpath("//*[@id='next']"));
-        nextButton.click();
+        //2.Enter Username
+        signInPage.enterUsername(driver, "kbjoshitest@gmail.com");
 
-        // Enter Password
-        WebDriverWait wait = new WebDriverWait(driver, 5);
-        ExpectedCondition<WebElement> condition = ExpectedConditions.visibilityOfElementLocated(By.id("Passwd"));
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("Passwd")));
 
-        WebElement pwdTextBox = driver.findElement(By.id("Passwd"));
+        //3. Go to next page
+        SignInPage2 signInPage2 = signInPage.clickNextButton(driver);
 
-        pwdTextBox.click();
-        pwdTextBox.clear();
-        pwdTextBox.sendKeys("testingrocks");
+        //4. Enter Password
+        signInPage2.enterPassword(driver, "testingrocks");
 
-        //Uncheck "Stay signed in" -- dont save cookies
-        WebElement staySignedInCheckbox = driver.findElement(By.xpath("//*[@id='PersistentCookie']"));
-        staySignedInCheckbox.click();
+        //5. Uncheck "Stay signed in" -- dont save cookies
+        signInPage2.uncheckRemeberMe(driver);
 
-        WebElement signInButton = driver.findElement(By.id("signIn"));
-        signInButton.click();
+        //6. Click Sign In Button
+        EmailHomePage emailHomePage = signInPage2.clickSignIn(driver);
 
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.partialLinkText("Inbox")));
-        Assert.assertTrue("Inbox should be present!!",driver.findElements(By.partialLinkText("Inbox")).size()>0);
+        //7. Verify login was successful
+        Assert.assertTrue("Inbox should be present!!",emailHomePage.inboxIsPresent(driver));
 
-        //Sign Out
-        WebElement profButton = driver.findElement(By.cssSelector("a[title*='Google Account:']"));
-        profButton.click();
 
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.linkText("Sign out")));
-        WebElement signOutLink = driver.findElement(By.linkText("Sign out"));
-        signOutLink.click();
+        //8. Sign Out
+        signInPage = emailHomePage.signOut(driver);
 
-        //wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"next\"]")));
-        Assert.assertTrue("Sign In button should exist", driver.findElements(By.xpath("//*[@id=\"next\"]")).size()>0);
+        //9. Verify user signed out successfully
+        Assert.assertTrue("Sign In button should exist", signInPage.signInButtonIsPresent(driver));
 
     }
 
