@@ -86,7 +86,7 @@ public class GmailTests {
         emailHomePage.enterSubject(driver, subjectMatter);
 
         //Fill in email body
-        final String emailMatter = "Hello! "+ "\n" + "This is a test email to self";
+        final String emailMatter = "Hello, "+ "\n" + "This is a test email to self";
         emailHomePage.enterEmailBody(driver, emailMatter);
 
         //Click send
@@ -96,7 +96,7 @@ public class GmailTests {
         emailHomePage.clickOnInbox(driver);
         
         //Click email
-        EmailViewPage emailViewPage = WebUtil.goToEmailViewPage(driver);
+        EmailViewPage emailViewPage = emailHomePage.goToEmailViewPage(driver);
 
         //Verify the email subject and email body is correct
         String actualSubject = emailViewPage.getEmailSubjectText(driver);
@@ -106,7 +106,7 @@ public class GmailTests {
         Assert.assertEquals("Email body content should match", emailMatter, actualEmailContent);
 
         //Sign out
-        signInPage = emailViewPage.signOut(driver);
+        signInPage = emailHomePage.signOut(driver);
 
         //Verify user signed out successfully
         Assert.assertTrue("Sign In button should exist", signInPage.signInButtonIsPresent(driver));

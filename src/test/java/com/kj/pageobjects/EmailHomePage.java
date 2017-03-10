@@ -1,5 +1,6 @@
 package com.kj.pageobjects;
 
+import com.kj.utils.WebUtil;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
@@ -16,59 +17,52 @@ public class EmailHomePage {
 
 
     public SignInPage signOut(ChromeDriver driver) {
-        WebElement profButton = driver.findElement(By.cssSelector("a[title*='Google Account:']"));
-        profButton.click();
+        WebUtil.click(driver, By.cssSelector("a[title*='Google Account:']"));
 
-        WebDriverWait wait = new WebDriverWait(driver, 30);
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.linkText("Sign out")));
-        WebElement signOutLink = driver.findElement(By.linkText("Sign out"));
-        signOutLink.click();
+        WebUtil.click(driver, By.id("gb_71"));
 
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"next\"]")));
+        WebUtil.waitForElementVisible(driver, By.id("next"));
 
         return PageFactory.initElements(driver, SignInPage.class);
     }
 
     public boolean inboxIsPresent(ChromeDriver driver) {
-        return driver.findElements(By.partialLinkText("Inbox")).size() > 0;
+        return WebUtil.isElementPresent(driver, By.partialLinkText("Inbox"));
     }
 
     public void clickOnCompose(ChromeDriver driver) {
-        WebElement composeButton = driver.findElement(By.cssSelector("div[role='button'][gh='cm'"));
-        composeButton.click();
+        WebUtil.click(driver, By.cssSelector("div[role='button'][gh='cm'"));
     }
 
     public void enterRecipient(ChromeDriver driver, String s) {
-        WebElement toRecipient = driver.findElement(By.cssSelector("textarea[aria-label='To']"));
-        toRecipient.click();
-        toRecipient.clear();
-        toRecipient.sendKeys("kbjoshitest@gmail.com");
-        toRecipient.sendKeys(Keys.TAB);
+        WebUtil.clearAndSendKeys(driver, By.cssSelector("textarea[aria-label='To']"), "kbjoshitest@gmail.com");
     }
 
     public void enterSubject(ChromeDriver driver, String subjectMatter) {
-        WebElement subjectbox = driver.findElement(By.cssSelector("input[name='subjectbox']"));
-        subjectbox.click();
-        subjectbox.clear();
-        subjectbox.sendKeys(subjectMatter);
+        WebUtil.clearAndSendKeys(driver, By.cssSelector("input[name='subjectbox']"), subjectMatter);
     }
 
     public void enterEmailBody(ChromeDriver driver, String emailMatter) {
-        WebElement emailBody = driver.findElement(By.cssSelector("div[aria-label='Message Body']"));
-        emailBody.click();
-        emailBody.clear();
-        emailBody.sendKeys(emailMatter);
+        WebUtil.clearAndSendKeys(driver, By.cssSelector("div[aria-label='Message Body']"), emailMatter);
     }
 
     public void clickOnSendButton(ChromeDriver driver) {
-        WebElement sendButton = driver.findElement(By.cssSelector("div[aria-label*='Send']"));
-        sendButton.click();
+        WebUtil.click(driver, By.cssSelector("div[aria-label*='Send']"));
     }
 
     public void clickOnInbox(ChromeDriver driver) {
-        WebDriverWait wait = new WebDriverWait(driver, 30);
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.linkText("Inbox (1)")));
-        WebElement inboxLink = driver.findElement(By.linkText("Inbox (1)"));
-        inboxLink.click();
+        WebUtil.waitForElementVisible(driver, By.linkText("Inbox (1)"));
+        WebUtil.click(driver, By.linkText("Inbox (1)"));
+    }
+
+    public EmailViewPage goToEmailViewPage(ChromeDriver driver) {
+        WebUtil.waitForElementVisible(driver, By.cssSelector("div[class='y6'] span[id] b"));
+//        WebDriverWait wait = new WebDriverWait(driver, WAIT_FOR_TIME);
+//        wait.until(ExpectedConditions.visibilityOfElementLocated(by));
+        WebUtil.click(driver, By.cssSelector("div[class='y6'] span[id] b"));
+//        WebElement newEmail = driver.findElement(By.cssSelector("div[class='y6'] span[id] b"));
+//        newEmail.click();
+
+        return PageFactory.initElements(driver, EmailViewPage.class);
     }
 }
