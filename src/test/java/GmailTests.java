@@ -1,6 +1,9 @@
+import com.kj.categories.Critical;
+import com.kj.categories.Major;
 import com.kj.pageobjects.*;
 import com.kj.utils.WebUtil;
 import org.junit.*;
+import org.junit.experimental.categories.Category;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -19,6 +22,7 @@ public class GmailTests {
         driver = new ChromeDriver();
     }
 
+    @Category({Critical.class})
     @Test
     public void gmailLoginShouldBeSuccessful(){
 
@@ -51,6 +55,7 @@ public class GmailTests {
 
     }
 
+    @Category({Major.class})
     @Test
     public void gmailSendAndReceive(){
         //Sign in
