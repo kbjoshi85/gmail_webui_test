@@ -99,7 +99,7 @@ public class GmailTests {
 
         //Click inbox again
         emailHomePage.clickOnInbox(driver);
-        
+
         //Click email
         EmailViewPage emailViewPage = emailHomePage.goToEmailViewPage(driver);
 
