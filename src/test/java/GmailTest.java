@@ -12,7 +12,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 /**
  * Created by KJoshi on 03/05/2017.
  */
-public class GmailTests {
+public class GmailTest {
 
     private static ChromeDriver driver;
 
